@@ -1,0 +1,16 @@
+---
+- name: This is a hello-world example
+  hosts: ansibleclient01.local
+  tasks:
+    - name: Create a file called '/tmp/testfile.txt' with the content 'hello world'.
+      copy:
+        content: hello world {{ path }}
+        dest: /tmp/testfile.txt
+    - name: Download Java Agent
+      get_url:
+        url: "http://192.168.0.147:9900/AppServerAgent-ibm-21.6.1.32843.zip"
+        dest: "/tmp/AppServerAgent-ibm-21.6.1.32843.zip"
+        force: true # download a new file even if javaagent.zip exists.
+      changed_when: false
+      register: result
+      failed_when: result.status_code != 200
